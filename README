@@ -22,9 +22,7 @@ The argument to enqueue() is a callable object (e.g., a lambda function) that wi
 
  The enqueue() function returns a std::future object that can be used to retrieve the result of the task when it completes:
 
-c++
-
-auto result = pool.enqueue_response([](){
+auto result = pool.enqueue_result([](){
     // code to execute in the worker thread
     return 42;
 });
@@ -33,9 +31,11 @@ auto result = pool.enqueue_response([](){
 int answer = result.get();
 
 You can add as many tasks to the thread pool as you like. They will be executed in the order in which they are added, as worker threads become available.
+
 Thread Safety
 
 The ThreadPool class is designed to be thread-safe, meaning that it can be used from multiple threads concurrently without causing race conditions or other synchronization problems. However, it is the responsibility of the user to ensure that any shared data structures or resources accessed by the tasks are also thread-safe.
+
 Implementation
 
 The ThreadPool class is implemented using C++11 features, including std::thread, std::mutex, std::condition_variable, and std::future. It uses a std::vector to store the worker threads and a std::queue to store the tasks. A std::condition_variable is used to signal worker threads when a new task is added to the queue.
