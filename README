@@ -1,4 +1,4 @@
-ThreadPool Class
+ThreadPool Class (REQUIRES C++17)
 
 The ThreadPool class is a C++ class that provides a simple thread pool implementation. A thread pool is a group of worker threads that are created at initialization time and are used to execute a queue of tasks. This can help improve the performance of programs that need to perform many small, independent tasks, by minimizing the overhead associated with thread creation and destruction.
 Usage
