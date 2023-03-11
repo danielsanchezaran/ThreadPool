@@ -1,6 +1,7 @@
 #include <thread_safe_counter.hpp>
 
 ThreadSafeCounter::ThreadSafeCounter() : count(0) {}
+ThreadSafeCounter::~ThreadSafeCounter() {}
 
 void ThreadSafeCounter::increment() {
   std::lock_guard<std::mutex> lock(mutex);
