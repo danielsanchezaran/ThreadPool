@@ -1,4 +1,4 @@
-#include "thread_pool.hpp"
+#include <thread_pool.hpp>
 
 ThreadPool::ThreadPool(int numThreads) : stop(false) {
   for (int i = 0; i < numThreads; ++i) {
@@ -30,11 +30,4 @@ ThreadPool::~ThreadPool() {
   for (std::thread& thread : threads) thread.join();
 }
 
-template <class F, class... Args>
-void ThreadPool::enqueue(F&& f, Args&&... args) {
-  {
-    std::unique_lock<std::mutex> lock(queueMutex);
-    tasks.emplace([=] { std::invoke(f, args...); });
-  }
-  condition.notify_one();
-}
+

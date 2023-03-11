@@ -1,3 +1,4 @@
+#pragma once
 #include <condition_variable>
 #include <functional>
 #include <future>
@@ -23,7 +24,13 @@ class ThreadPool {
    * @param args: arguments for f
    */
   template <class F, class... Args>
-  void enqueue(F&& f, Args&&... args);
+inline void enqueue(F&& f, Args&&... args) {
+  {
+    std::unique_lock<std::mutex> lock(queueMutex);
+    tasks.emplace([=] { std::invoke(f, args...); });
+  }
+  condition.notify_one();
+};
 
  private:
   std::vector<std::thread> threads;
