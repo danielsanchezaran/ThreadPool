@@ -52,3 +52,11 @@ The ThreadPool class has some limitations that you should be aware of:
     The number of worker threads is fixed at initialization time and cannot be changed dynamically.
 
     The task queue is unbounded, so adding too many tasks can potentially consume all available memory.
+    
+ How to build: 
+    - Go to the repo's root folder
+    - mkdir build
+    - cd build 
+    - cmake ..
+    - make
+    - execute the main file with ./main 
