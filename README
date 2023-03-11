@@ -20,4 +20,35 @@ pool.enqueue([](){
 
 The argument to enqueue() is a callable object (e.g., a lambda function) that will be executed in one of the worker threads.
 
- 
+ The enqueue() function returns a std::future object that can be used to retrieve the result of the task when it completes:
+
+c++
+
+auto result = pool.enqueue_response([](){
+    // code to execute in the worker thread
+    return 42;
+});
+
+// wait for the task to complete and retrieve the result
+int answer = result.get();
+
+You can add as many tasks to the thread pool as you like. They will be executed in the order in which they are added, as worker threads become available.
+Thread Safety
+
+The ThreadPool class is designed to be thread-safe, meaning that it can be used from multiple threads concurrently without causing race conditions or other synchronization problems. However, it is the responsibility of the user to ensure that any shared data structures or resources accessed by the tasks are also thread-safe.
+Implementation
+
+The ThreadPool class is implemented using C++11 features, including std::thread, std::mutex, std::condition_variable, and std::future. It uses a std::vector to store the worker threads and a std::queue to store the tasks. A std::condition_variable is used to signal worker threads when a new task is added to the queue.
+
+The ThreadPool class uses RAII (Resource Acquisition Is Initialization) to ensure that all threads are properly cleaned up when the object is destroyed. The threads are joined in the destructor, which waits for all outstanding tasks to complete before destroying the threads.
+Limitations
+
+The ThreadPool class has some limitations that you should be aware of:
+
+    The tasks executed by the worker threads must be independent and not share any resources, as there is no guarantee of thread safety.
+
+    There is no mechanism for canceling tasks once they have been added to the queue.
+
+    The number of worker threads is fixed at initialization time and cannot be changed dynamically.
+
+    The task queue is unbounded, so adding too many tasks can potentially consume all available memory.
