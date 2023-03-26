@@ -26,7 +26,7 @@ class ThreadPool {
   inline void enqueue(F&& f, Args&&... args) {
     {
       std::unique_lock<std::mutex> lock(queueMutex);
-       // don't allow enqueueing after stopping the pool
+      // don't allow enqueueing after stopping the pool
       if (stop) throw std::runtime_error("enqueue on stopped ThreadPool");
       tasks.emplace([=] { std::invoke(f, args...); });
     }
@@ -61,10 +61,13 @@ class ThreadPool {
     return res;
   }
 
+  void waitUntilDone();
+
  private:
   std::vector<std::thread> threads;
   std::queue<std::function<void()>> tasks;
   std::mutex queueMutex;
   std::condition_variable condition;
   bool stop;
+  std::atomic<int> active_threads;
 };

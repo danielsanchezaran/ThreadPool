@@ -15,7 +15,7 @@ enable_testing()
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 
-add_executable(thread_pool_test ./tests/thread_pool_test.cpp ./src/thread_pool.cpp)
+add_executable(thread_pool_test ./tests/thread_pool_test.cpp ./src/thread_pool.cpp ./src/thread_safe_counter)
 target_include_directories(thread_pool_test PRIVATE ./include)
 target_link_libraries(thread_pool_test PRIVATE Threads::Threads GTest::GTest GTest::Main)
 
