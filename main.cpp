@@ -23,13 +23,16 @@ int main() {
   for (int i = 0; i < numTasks; ++i) {
     thread_pool.enqueue([&counter] { counter.increment(); });
   }
-  // Check if we reached the desired count.
-  std::cout << "Count: " << counter.getCount() << std::endl;
+
+  thread_pool.waitUntilDone();
+  std::cout << "Count to 1000: " << counter.getCount() << std::endl;
 
   for (int i = 0; i < numTasks; ++i) {
     thread_pool.enqueue([&counter] { counter.decrement(); });
   }
-  std::cout << "Count: " << counter.getCount() << std::endl;
+
+  thread_pool.waitUntilDone();
+  std::cout << "Count to 0: " << counter.getCount() << std::endl;
 
   // Retrieve the result
   std::cout << "Future result " << future_result.get() << std::endl;
