@@ -20,7 +20,7 @@ ThreadPool::ThreadPool(int numThreads) : stop(false), active_threads(0) {
         ++active_threads;
         task();
         --active_threads;
-        condition.notify_one();
+        condition.notify_all();
       }
     });
   }
